@@ -27,6 +27,7 @@ resolvers += Resolver.jcenterRepo
 resolvers += "JRAF" at "http://JRAF.org/static/maven/2"
 
 libraryDependencies ++= Seq(
+  "org.cyanogenmod" % "platform.sdk" % "5.0",
   "dnsjava" % "dnsjava" % "2.1.7",
   "com.github.kevinsawicki" % "http-request" % "6.0",
   "commons-net" % "commons-net" % "3.4",
@@ -51,4 +52,5 @@ proguardVersion in Android := "5.2.1"
 proguardOptions in Android ++= Seq("-keep class com.github.shadowsocks.** { <init>(...); }",
           "-keep class com.github.shadowsocks.System { *; }",
           "-keepattributes *Annotation*",
+          "-dontwarn cyanogenmod.**",
           "-dontwarn org.xbill.**")

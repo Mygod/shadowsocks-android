@@ -42,15 +42,21 @@ package com.github.shadowsocks
 import java.util
 import java.util.concurrent.TimeUnit
 
-import android.app.Application
+import android.app.{Application, PendingIntent}
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.preference.PreferenceManager
-import com.j256.ormlite.logger.LocalLog
 import com.github.shadowsocks.database.{DBHelper, ProfileManager}
 import com.github.shadowsocks.utils.{Key, Utils}
 import com.google.android.gms.analytics.{GoogleAnalytics, HitBuilders}
 import com.google.android.gms.common.api.ResultCallback
 import com.google.android.gms.tagmanager.{ContainerHolder, TagManager}
+import com.j256.ormlite.logger.LocalLog
+import cyanogenmod.app.{CMStatusBarManager, CustomTile}
+import cyanogenmod.app.CustomTile.ExpandedListItem
+import cyanogenmod.os.Build
+
+import scala.collection.JavaConversions._
 
 object ShadowsocksApplication {
   var instance: ShadowsocksApplication = _
@@ -92,6 +98,7 @@ class ShadowsocksApplication extends Application {
   override def onCreate() {
     java.lang.System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY, "ERROR");
     ShadowsocksApplication.instance = this
+
     val tm = TagManager.getInstance(this)
     val pending = tm.loadContainerPreferNonDefault("GTM-NT8WS8", R.raw.gtm_default_container)
     val callback = new ResultCallback[ContainerHolder] {
@@ -111,5 +118,26 @@ class ShadowsocksApplication extends Application {
       }
     }
     pending.setResultCallback(callback, 2, TimeUnit.SECONDS)
+
+    if (Build.CM_VERSION.SDK_INT >= 1) {
+      val mainIntent = new Intent(this, classOf[Shadowsocks]).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+      val tile = new CustomTile.Builder(this).setLabel(R.string.app_name).setIcon(R.drawable.ic_start_connected)
+        .setContentDescription(R.string.app_name)
+        .setOnLongClickIntent(PendingIntent.getActivity(this, 0, mainIntent, 0)).setOnSettingsClickIntent(mainIntent)
+      profileManager.getAllProfiles match {
+        case Some(profiles) =>
+          val style = new CustomTile.ListExpandedStyle
+            style.setListItems(new util.ArrayList[ExpandedListItem](profiles.map(profile => {
+            val item = new ExpandedListItem()
+            item.setExpandedListItemDrawable(if (profile.id == profileId) android.R.drawable.radiobutton_on_background
+              else android.R.drawable.radiobutton_off_background)
+            item.setExpandedListItemTitle(profile.name)
+            item
+          })))
+          tile.setExpandedStyle(style)
+        case _ =>
+      }
+      CMStatusBarManager.getInstance(this).publishTile(0, tile.build)
+    }
   }
 }
