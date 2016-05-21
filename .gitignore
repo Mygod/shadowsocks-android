@@ -23,10 +23,6 @@ local.sbt
 out/
 
 #NDK
-src/main/obj
-src/main/libs
-src/main/assets/armeabi
-src/main/assets/armeabi-v7a
-src/main/assets/x86
-src/main/assets/api-16/
-jni/Application.mk
+core/src/main/obj
+core/src/main/libs
+core/src/main/assets

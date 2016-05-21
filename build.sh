@@ -4,7 +4,7 @@ function try () {
 "$@" || exit -1
 }
 
-try pushd src/main
+try pushd core/src/main
 
 # Build
 #try $ANDROID_NDK_HOME/ndk-build clean
