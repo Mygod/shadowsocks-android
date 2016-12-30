@@ -85,11 +85,10 @@ class MainActivity extends Activity with ServiceBoundContext with Drawer.OnDrawe
   private var currentFragment: ToolbarFragment = _
   private lazy val profilesFragment = new ProfilesFragment()
   private lazy val globalSettingsFragment = new GlobalSettingsFragment()
-  private lazy val aboutFragment = new AboutFragment()
   private lazy val customTabsIntent = new CustomTabsIntent.Builder()
     .setToolbarColor(ContextCompat.getColor(this, R.color.material_primary_500))
     .build()
-  def launchUrl(url: String): Unit = try customTabsIntent.launchUrl(this, Uri.parse(url)) catch {
+  private def launchUrl(url: String) = try customTabsIntent.launchUrl(this, Uri.parse(url)) catch {
     case _: ActivityNotFoundException => // Ignore
   }
 
@@ -218,6 +217,7 @@ class MainActivity extends Activity with ServiceBoundContext with Drawer.OnDrawe
           .withName(R.string.about)
           .withIcon(AppCompatResources.getDrawable(this, R.drawable.ic_action_copyright))
           .withIconTintingEnabled(true)
+          .withSelectable(false)
       )
       .withOnDrawerItemClickListener(this)
       .withActionBarDrawerToggle(true)
@@ -376,7 +376,7 @@ class MainActivity extends Activity with ServiceBoundContext with Drawer.OnDrawe
       case DRAWER_GLOBAL_SETTINGS => displayFragment(globalSettingsFragment)
       case DRAWER_ABOUT =>
         app.track(TAG, "about")
-        displayFragment(aboutFragment)
+        launchUrl("https://github.com/shadowsocks/shadowsocks-android/blob/master/README.md#license")
       case DRAWER_FAQ => launchUrl(getString(R.string.faq_url))
     }
     true  // unexpected cases will throw exception

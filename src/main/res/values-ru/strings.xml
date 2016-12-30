@@ -88,7 +88,6 @@
   <string name="settings">Настройки</string>
   <string name="recovery">Сброс</string>
   <string name="about">О приложении</string>
-  <string name="about_title">Shadowsocks %s</string>
   <string name="share">Поделиться</string>
   <string name="flush_dnscache">Очистить кэш DNS</string>
   <string name="flush_dnscache_summary">Работает только в режиме NAT. Требует наличия ROOT прав.</string>

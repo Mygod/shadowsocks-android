@@ -101,7 +101,6 @@
   <string name="faq_url">https://github.com/shadowsocks/shadowsocks-android/blob/master/.github/faq.md</string>
   <string name="recovery">Reset</string>
   <string name="about">About</string>
-  <string name="about_title">Shadowsocks %s</string>
   <string name="edit">Edit</string>
   <string name="share">Share</string>
   <string name="flush_dnscache">Flush DNS cache</string>

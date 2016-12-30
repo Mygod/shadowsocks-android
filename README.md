@@ -34,18 +34,7 @@ A [shadowsocks](http://shadowsocks.org) client for Android, written in Scala.
     sbt native-build clean android:package-release
 ```
 
-## OPEN SOURCE LICENSES
-
-* shadowsocks-libev: [GPLv3](https://github.com/shadowsocks/shadowsocks-libev/blob/master/LICENSE)
-* tun2socks: [BSD](https://github.com/shadowsocks/badvpn/blob/shadowsocks-android/COPYING)
-* redsocks: [APL 2.0](https://github.com/shadowsocks/redsocks/blob/master/README)
-* OpenSSL: [OpenSSL](https://github.com/shadowsocks/openssl-android/blob/master/NOTICE)
-* pdnsd: [GPLv3](https://github.com/shadowsocks/shadowsocks-android/blob/master/src/main/jni/pdnsd/COPYING)
-* libev: [GPLv2](https://github.com/shadowsocks/shadowsocks-android/blob/master/src/main/jni/libev/LICENSE)
-* libevent: [BSD](https://github.com/shadowsocks/libevent/blob/master/LICENSE)
-* kcptun: [MIT](https://github.com/xtaci/kcptun)
-
-### LICENSE
+## LICENSE
 
 Copyright (C) 2016 by Max Lv <<max.c.lv@gmail.com>>  
 Copyright (C) 2016 by Mygod Studio <<contact-shadowsocks-android@mygod.be>>
@@ -62,3 +51,14 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+### OPEN SOURCE LICENSES
+
+* shadowsocks-libev: [GPLv3](https://github.com/shadowsocks/shadowsocks-libev/blob/master/LICENSE)
+* tun2socks: [BSD](https://github.com/shadowsocks/badvpn/blob/shadowsocks-android/COPYING)
+* redsocks: [APL 2.0](https://github.com/shadowsocks/redsocks/blob/master/README)
+* OpenSSL: [OpenSSL](https://github.com/shadowsocks/openssl-android/blob/master/NOTICE)
+* pdnsd: [GPLv3](https://github.com/shadowsocks/shadowsocks-android/blob/master/src/main/jni/pdnsd/COPYING)
+* libev: [GPLv2](https://github.com/shadowsocks/shadowsocks-android/blob/master/src/main/jni/libev/LICENSE)
+* libevent: [BSD](https://github.com/shadowsocks/libevent/blob/master/LICENSE)
+* kcptun: [MIT](https://github.com/xtaci/kcptun)
