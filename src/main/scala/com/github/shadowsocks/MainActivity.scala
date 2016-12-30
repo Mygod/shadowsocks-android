@@ -376,7 +376,8 @@ class MainActivity extends Activity with ServiceBoundContext with Drawer.OnDrawe
       case DRAWER_GLOBAL_SETTINGS => displayFragment(globalSettingsFragment)
       case DRAWER_ABOUT =>
         app.track(TAG, "about")
-        launchUrl("https://github.com/shadowsocks/shadowsocks-android/blob/master/README.md#license")
+        launchUrl("https://github.com/shadowsocks/shadowsocks-android/blob/v%s/README.md#license"
+          .formatLocal(Locale.ENGLISH, BuildConfig.VERSION_NAME))
       case DRAWER_FAQ => launchUrl(getString(R.string.faq_url))
     }
     true  // unexpected cases will throw exception
