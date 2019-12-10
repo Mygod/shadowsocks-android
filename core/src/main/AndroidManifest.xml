@@ -105,6 +105,18 @@
             </intent-filter>
         </receiver>
 
+        <receiver android:name="com.github.shadowsocks.bg.TileBootReceiver"
+            android:process=":bg"
+            android:directBootAware="true"
+            android:enabled="false"
+            tools:targetApi="n">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
+
         <service android:name="com.google.firebase.components.ComponentDiscoveryService"
                  android:directBootAware="true"/>
         <provider android:name="com.crashlytics.android.CrashlyticsInitProvider"

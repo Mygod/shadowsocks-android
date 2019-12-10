@@ -21,6 +21,7 @@
 package com.github.shadowsocks.bg
 
 import android.app.KeyguardManager
+import android.content.Intent
 import android.graphics.drawable.Icon
 import android.service.quicksettings.Tile
 import androidx.annotation.RequiresApi
@@ -53,8 +54,14 @@ class TileService : BaseTileService(), ShadowsocksConnection.Callback {
 
     override fun onTileAdded() {
         super.onTileAdded()
-        updateTile(BaseService.lastState) { BaseService.lastProfileName }   // not enough time to bind service :(
+        TileBootReceiver.enabled = true
+        Core.requestTileUpdate()    // bind is going away immediately so need another request
     }
+    override fun onTileRemoved() {
+        TileBootReceiver.enabled = false
+        super.onTileRemoved()
+    }
+
     override fun onStartListening() {
         super.onStartListening()
         connection.connect(this, this)
@@ -64,6 +71,8 @@ class TileService : BaseTileService(), ShadowsocksConnection.Callback {
         super.onStopListening()
     }
 
+    override fun onBind(intent: Intent?) = super.onBind(intent).also { Core.requestTileUpdate() }
+
     override fun onClick() {
         if (isLocked && !DataStore.canToggleLocked) unlockAndRun(this::toggle) else toggle()
     }
@@ -72,7 +81,6 @@ class TileService : BaseTileService(), ShadowsocksConnection.Callback {
         qsTile?.apply {
             label = null
             when (serviceState) {
-                BaseService.State.Idle -> error("serviceState")
                 BaseService.State.Connecting -> {
                     icon = iconBusy
                     state = Tile.STATE_ACTIVE
@@ -90,6 +98,7 @@ class TileService : BaseTileService(), ShadowsocksConnection.Callback {
                     icon = iconIdle
                     state = Tile.STATE_INACTIVE
                 }
+                else -> error("serviceState")
             }
             label = label ?: getString(R.string.app_name)
             updateTile()

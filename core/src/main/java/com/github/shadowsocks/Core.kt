@@ -25,6 +25,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.admin.DevicePolicyManager
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInfo
@@ -40,6 +41,7 @@ import androidx.work.WorkManager
 import com.crashlytics.android.Crashlytics
 import com.github.shadowsocks.acl.Acl
 import com.github.shadowsocks.aidl.ShadowsocksConnection
+import com.github.shadowsocks.bg.TileService
 import com.github.shadowsocks.core.R
 import com.github.shadowsocks.database.Profile
 import com.github.shadowsocks.database.ProfileManager
@@ -85,6 +87,11 @@ object Core {
         return result
     }
 
+    fun requestTileUpdate() {
+        if (Build.VERSION.SDK_INT >= 24) android.service.quicksettings.TileService.requestListeningState(
+                app, ComponentName(app, TileService::class.java))
+    }
+
     fun init(app: Application, configureClass: KClass<out Any>) {
         this.app = app
         this.configureIntent = {
@@ -126,6 +133,7 @@ object Core {
             DataStore.publicStore.putLong(Key.assetUpdateTime, packageInfo.lastUpdateTime)
         }
         updateNotificationChannels()
+        requestTileUpdate()
     }
 
     fun updateNotificationChannels() {

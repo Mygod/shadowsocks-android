@@ -21,7 +21,6 @@
 package com.github.shadowsocks.bg
 
 import android.app.Service
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
@@ -64,8 +63,6 @@ object BaseService {
 
     const val CONFIG_FILE = "shadowsocks.conf"
     const val CONFIG_FILE_UDP = "shadowsocks-udp.conf"
-    var lastState = State.Idle
-    var lastProfileName: String? = null
 
     interface ExpectedException
     class ExpectedExceptionWrapper(e: Exception) : Exception(e.localizedMessage, e), ExpectedException
@@ -93,11 +90,7 @@ object BaseService {
             if (state == s && msg == null) return
             binder.stateChanged(s, msg)
             state = s
-            if (Build.VERSION.SDK_INT >= 24) {
-                lastState = s
-                android.service.quicksettings.TileService.requestListeningState(
-                        service as Context, ComponentName(service, TileService::class.java))
-            }
+            Core.requestTileUpdate()
         }
     }
 
@@ -293,7 +286,6 @@ object BaseService {
                         it.shutdown(this)
                         it.profile.id
                     }
-                    lastProfileName = null
                     data.proxy = null
                     data.udpFallback = null
                     data.binder.trafficPersisted(ids)
@@ -330,7 +322,6 @@ object BaseService {
             }
             val (profile, fallback) = profilePair
             profile.name = profile.formattedName    // save name for later queries
-            lastProfileName = profile.name
             val proxy = ProxyInstance(profile)
             data.proxy = proxy
             data.udpFallback = if (fallback == null) null else ProxyInstance(fallback, profile.route)
